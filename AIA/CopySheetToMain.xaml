@@ -1,0 +1,229 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="CopySheetToMain"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_file_xls" Type="InArgument(x:String)" />
+    <x:Property Name="in_main_template_dir" Type="InArgument(x:String)" />
+    <x:Property Name="userfolder" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>CopySheetToMain_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>UiPath.Excel</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.Core</AssemblyReference>
+      <AssemblyReference>UiPath.Core.Activities</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="CopySheetToMain" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="ui:WorkbookApplication" Name="wk" />
+      <Variable x:TypeArguments="sd:DataTable" Name="dt_sheet" />
+      <Variable x:TypeArguments="x:Boolean" Name="existsPopUpExcel" />
+    </Sequence.Variables>
+    <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="Begin CopySheetToMain Processing" />
+    <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;filename: &quot;+in_file_xls]" />
+    <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Excel application scope" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Workbook="[wk]" WorkbookPath="[in_file_xls]">
+      <ui:ExcelApplicationScope.Body>
+        <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+          </ActivityAction.Argument>
+          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_5">
+            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_4">
+              <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                <ui:UiElementExists DisplayName="Element Exists 'EXCEL.EXE Microsoft'" Exists="[existsPopUpExcel]" sap2010:WorkflowViewState.IdRef="UiElementExists_1">
+                  <ui:UiElementExists.Target>
+                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="6ed04c138878b99188ef071fb784024f" Selector="&lt;wnd app='excel.exe' cls='#32770' title='Microsoft Excel' /&gt;" TimeoutMS="3000" WaitForReady="INTERACTIVE" />
+                  </ui:UiElementExists.Target>
+                </ui:UiElementExists>
+                <If Condition="[existsPopUpExcel]" sap2010:WorkflowViewState.IdRef="If_2">
+                  <If.Then>
+                    <Sequence sap2010:WorkflowViewState.IdRef="Sequence_6">
+                      <ui:Highlight Color="Gold" HighlightTime="1000" sap2010:WorkflowViewState.IdRef="Highlight_1">
+                        <ui:Highlight.Target>
+                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='excel.exe' cls='#32770' title='Microsoft Excel' /&gt;&lt;wnd title='Do&amp;amp;n&amp;apos;t Update' cls='Button' /&gt;" WaitForReady="INTERACTIVE" />
+                        </ui:Highlight.Target>
+                      </ui:Highlight>
+                      <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click 'Button'" sap2010:WorkflowViewState.IdRef="Click_1" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="True">
+                        <ui:Click.CursorPosition>
+                          <ui:CursorPosition Position="Center">
+                            <ui:CursorPosition.OffsetX>
+                              <InArgument x:TypeArguments="x:Int32" />
+                            </ui:CursorPosition.OffsetX>
+                            <ui:CursorPosition.OffsetY>
+                              <InArgument x:TypeArguments="x:Int32" />
+                            </ui:CursorPosition.OffsetY>
+                          </ui:CursorPosition>
+                        </ui:Click.CursorPosition>
+                        <ui:Click.Target>
+                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="92211cf831cc6106ce290fae1c2fa623" Selector="&lt;wnd app='excel.exe' cls='#32770' title='Microsoft Excel' /&gt;&lt;wnd title='Do&amp;amp;n&amp;apos;t Update' cls='Button' /&gt;" WaitForReady="INTERACTIVE" />
+                        </ui:Click.Target>
+                      </ui:Click>
+                    </Sequence>
+                  </If.Then>
+                </If>
+                <If Condition="[wk.GetSheets.Count &gt; 0]" sap2010:WorkflowViewState.IdRef="If_1">
+                  <If.Then>
+                    <ui:ForEach x:TypeArguments="x:String" DisplayName="For each" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[wk.GetSheets]">
+                      <ui:ForEach.Body>
+                        <ActivityAction x:TypeArguments="x:String">
+                          <ActivityAction.Argument>
+                            <DelegateInArgument x:TypeArguments="x:String" Name="sheetName" />
+                          </ActivityAction.Argument>
+                          <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_1">
+                            <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[sheetName]" />
+                            <ui:ExcelReadRange AddHeaders="False" DataTable="[dt_sheet]" DisplayName="Read Range" sap2010:WorkflowViewState.IdRef="ExcelReadRange_1" SheetName="[sheetName]">
+                              <ui:ExcelReadRange.Range>
+                                <InArgument x:TypeArguments="x:String">
+                                  <Literal x:TypeArguments="x:String" Value="" />
+                                </InArgument>
+                              </ui:ExcelReadRange.Range>
+                            </ui:ExcelReadRange>
+                            <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="1" />
+                            <ui:WriteRange AddHeaders="False" DataTable="[dt_sheet]" DisplayName="Write range" sap2010:WorkflowViewState.IdRef="WriteRange_1" SheetName="[sheetName]" WorkbookPath="[in_main_template_dir]">
+                              <ui:WriteRange.StartingCell>
+                                <InArgument x:TypeArguments="x:String">
+                                  <Literal x:TypeArguments="x:String" Value="" />
+                                </InArgument>
+                              </ui:WriteRange.StartingCell>
+                            </ui:WriteRange>
+                            <Delay Duration="00:00:05" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                            <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="2" />
+                            <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Info" Message="3" />
+                          </Sequence>
+                        </ActivityAction>
+                      </ui:ForEach.Body>
+                    </ui:ForEach>
+                  </If.Then>
+                </If>
+              </Sequence>
+            </Sequence>
+            <ui:ExcelCloseWorkbook DisplayName="Close Workbook" sap2010:WorkflowViewState.IdRef="ExcelCloseWorkbook_1" Workbook="[wk]" />
+          </Sequence>
+        </ActivityAction>
+      </ui:ExcelApplicationScope.Body>
+    </ui:ExcelApplicationScope>
+    <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="End CopySheetToMain Processing" />
+    <sads:DebugSymbol.Symbol>dy9EOlx1aXBhdGhcQUlBXEFJQVJvYm90XEFJQVxDb3B5U2hlZXRUb01haW4ueGFtbDJIA6MBDgIBAU4FTpcBAgE9TwVPmwECATpQBaABIAIBBKEBBaEBlQECAQJOck6UAQIBPk9yT5gBAgE7UJwBUKIBAgE4ULABUL8BAgE2VgudARYCAQWhAXKhAZIBAgEDVw2bARgCAQmcAQ2cAYoBAgEGWA+aARoCAQqcAYEBnAGHAQIBB1kRXSYCATFeEXcWAgEpeBGZARYCAQtbjwFb0wECATVb3gFb5AECATRZX1lzAgEyXh9eMwIBKmAVdSACASx4H3g8AgEMehWXASICAQ1hF2UmAgEvZhd0IgIBLXqIAXqYAQIBKIABG5QBJgIBDmNxY/YBAgEwcqoBcq8CAgEugQEdgQGaAQIBJYIBHYgBMQIBH4kBHYkBkAECAR2KAR2QAS0CARWRAR2RAWQCAROSAR2SAZABAgERkwEdkwGQAQIBD4EBigGBAZcBAgEmggFNggFZAgEjhQEjhQFSAgEiggGwAYIBvQECASCJAYoBiQGNAQIBHo0BI40BUgIBHIoBSYoBVQIBGooBqQGKAbYBAgEYigHEAYoB3AECARaRAS2RATcCARSSAYoBkgGNAQIBEpMBigGTAY0BAgEQ</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="LogMessage_2" sap:VirtualizedContainerService.HintSize="558.4,92.8" />
+      <sap2010:ViewStateData Id="LogMessage_4" sap:VirtualizedContainerService.HintSize="558.4,92.8" />
+      <sap2010:ViewStateData Id="UiElementExists_1" sap:VirtualizedContainerService.HintSize="476.8,107.2" />
+      <sap2010:ViewStateData Id="Highlight_1" sap:VirtualizedContainerService.HintSize="313.6,68.8" />
+      <sap2010:ViewStateData Id="Click_1" sap:VirtualizedContainerService.HintSize="313.6,107.2" />
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="336,340.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="476.8,489.6" />
+      <sap2010:ViewStateData Id="LogMessage_1" sap:VirtualizedContainerService.HintSize="313.6,92.8" />
+      <sap2010:ViewStateData Id="ExcelReadRange_1" sap:VirtualizedContainerService.HintSize="313.6,59.2" />
+      <sap2010:ViewStateData Id="LogMessage_5" sap:VirtualizedContainerService.HintSize="313.6,92.8" />
+      <sap2010:ViewStateData Id="WriteRange_1" sap:VirtualizedContainerService.HintSize="313.6,115.2" />
+      <sap2010:ViewStateData Id="Delay_1" sap:VirtualizedContainerService.HintSize="313.6,22.4" />
+      <sap2010:ViewStateData Id="LogMessage_6" sap:VirtualizedContainerService.HintSize="313.6,92.8" />
+      <sap2010:ViewStateData Id="LogMessage_7" sap:VirtualizedContainerService.HintSize="313.6,92.8" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="336,932.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="352,1067.2" />
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="476.8,1216" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="499.2,2017.6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="521.6,2142.4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelCloseWorkbook_1" sap:VirtualizedContainerService.HintSize="521.6,59.2" />
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="544,2366.4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelApplicationScope_1" sap:VirtualizedContainerService.HintSize="558.4,2475.2" />
+      <sap2010:ViewStateData Id="LogMessage_3" sap:VirtualizedContainerService.HintSize="558.4,92.8" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="580.8,2998.4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CopySheetToMain_1" sap:VirtualizedContainerService.HintSize="620.8,3118.4" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

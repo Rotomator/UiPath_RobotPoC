@@ -1,0 +1,300 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="GetEmailInformation"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:snm="clr-namespace:System.Net.Mail;assembly=System"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="out_dir" Type="OutArgument(x:String)" />
+    <x:Property Name="in_log_dir" Type="InArgument(x:String)" />
+    <x:Property Name="in_attach_dir" Type="InArgument(x:String)" />
+    <x:Property Name="queue_name" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>GetEmailInformation_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>Microsoft.Exchange.WebServices.Data</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.Core</AssemblyReference>
+      <AssemblyReference>UiPath.Core.Activities</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>Microsoft.Exchange.WebServices</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <TryCatch DisplayName="Try catch GetEmailInformation" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+    <TryCatch.Variables>
+      <Variable x:TypeArguments="x:String" Name="newdir" />
+    </TryCatch.Variables>
+    <TryCatch.Try>
+      <Sequence DisplayName="GetEmailInformation" sap2010:WorkflowViewState.IdRef="Sequence_1">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="scg:List(snm:MailMessage)" Name="mails" />
+          <Variable x:TypeArguments="x:Int32" Default="2" Name="idx" />
+          <Variable x:TypeArguments="ui:WorkbookApplication" Name="wk_log" />
+          <Variable x:TypeArguments="sd:DataTable" Name="dt_log" />
+          <Variable x:TypeArguments="sd:DataRow" Name="dt_row" />
+          <Variable x:TypeArguments="x:String" Default="[Now.ToString(&quot;ddMMMyyyy&quot;)]" Name="dirname" />
+        </Sequence.Variables>
+        <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="Begin GetEmailInformation processing" />
+        <ui:BuildDataTable DataTable="[dt_log]" DisplayName="Build data table" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xA;      &lt;xs:complexType&gt;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xA;            &lt;xs:complexType&gt;&#xA;              &lt;xs:sequence&gt;&#xA;                &lt;xs:element name=&quot;NO&quot; type=&quot;xs:string&quot; /&gt;&#xA;                &lt;xs:element name=&quot;FROM&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;SENT_x0020_DATE&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;NUMBER_x0020_OF_x0020_ATTACHMENTS&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;STATUS&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;              &lt;/xs:sequence&gt;&#xA;            &lt;/xs:complexType&gt;&#xA;          &lt;/xs:element&gt;&#xA;        &lt;/xs:choice&gt;&#xA;      &lt;/xs:complexType&gt;&#xA;    &lt;/xs:element&gt;&#xA;  &lt;/xs:schema&gt;&#xA;&lt;/NewDataSet&gt;" />
+        <ui:GetOutlookMailMessages Filter="{x:Null}" TimeoutMS="{x:Null}" Account="indra@nctthai.com" DisplayName="Get outlook mail messages" GetAttachements="False" sap2010:WorkflowViewState.IdRef="GetOutlookMailMessages_1" MailFolder="Inbox" MarkAsRead="False" Messages="[mails]" OnlyUnreadMessages="True" Top="30" />
+        <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Number of Emails: &quot;+ mails.Count.ToString]" />
+        <If Condition="[mails.Count &gt; 0]" sap2010:WorkflowViewState.IdRef="If_1">
+          <If.Then>
+            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_14">
+              <Sequence DisplayName="True" sap2010:WorkflowViewState.IdRef="Sequence_11">
+                <ui:ForEach x:TypeArguments="snm:MailMessage" DisplayName="For each of Mails" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[mails]">
+                  <ui:ForEach.Body>
+                    <ActivityAction x:TypeArguments="snm:MailMessage">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="snm:MailMessage" Name="mail" />
+                      </ActivityAction.Argument>
+                      <Sequence DisplayName="Mail Body" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                        <Sequence DisplayName="Save Attachment" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                          <Assign sap2010:WorkflowViewState.IdRef="Assign_2">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[newdir]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">[in_attach_dir]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create directory" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[newdir]" />
+                          <ui:SaveMailAttachments Attachments="{x:Null}" DisplayName="Save Attachments" FolderPath="[newdir+mail.From.User]" sap2010:WorkflowViewState.IdRef="SaveMailAttachments_1" Message="[mail]" />
+                          <Sequence DisplayName="Create a Log" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                            <ui:InvokeCode ContinueOnError="{x:Null}" Code="datarow = datatable_log.NewRow&#xA;datarow(&quot;NO&quot;) = idx&#xA;datarow(&quot;FROM&quot;) = Mail.From&#xA;datarow(&quot;SENT DATE&quot;) = Mail.Headers(&quot;Date&quot;)&#xA;datarow(&quot;NUMBER OF ATTACHMENTS&quot;) = Mail.Attachments.ToArray.Length&#xA;datarow(&quot;STATUS&quot;) = &quot;OK&quot;" DisplayName="Invoke code" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
+                              <ui:InvokeCode.Arguments>
+                                <InArgument x:TypeArguments="sd:DataTable" x:Key="datatable_log">[dt_log]</InArgument>
+                                <OutArgument x:TypeArguments="sd:DataRow" x:Key="datarow">[dt_row]</OutArgument>
+                                <InArgument x:TypeArguments="x:String" x:Key="idx">[(idx-1).ToString]</InArgument>
+                                <InArgument x:TypeArguments="snm:MailMessage" x:Key="mail">[mail]</InArgument>
+                              </ui:InvokeCode.Arguments>
+                            </ui:InvokeCode>
+                            <ui:AddDataRow ArrayRow="{x:Null}" DataRow="[dt_row]" DataTable="[dt_log]" DisplayName="Add data row" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
+                            <ui:AddQueueItem ServiceBaseAddress="{x:Null}" TimeoutMS="{x:Null}" DisplayName="Add queue item" sap2010:WorkflowViewState.IdRef="AddQueueItem_1" Priority="Normal" QueueType="[queue_name]" Reference="MailMessage">
+                              <ui:AddQueueItem.ItemInformation>
+                                <InArgument x:TypeArguments="x:String" x:Key="fromUser">[mail.From.User]</InArgument>
+                                <InArgument x:TypeArguments="x:Int32" x:Key="noAttachment">[mail.Attachments.Count]</InArgument>
+                              </ui:AddQueueItem.ItemInformation>
+                            </ui:AddQueueItem>
+                          </Sequence>
+                        </Sequence>
+                        <Assign sap2010:WorkflowViewState.IdRef="Assign_1">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:Int32">[idx]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:Int32">[idx+1]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                      </Sequence>
+                    </ActivityAction>
+                  </ui:ForEach.Body>
+                </ui:ForEach>
+                <ui:WriteRange AddHeaders="True" DataTable="[dt_log]" DisplayName="Write range" sap2010:WorkflowViewState.IdRef="WriteRange_1" SheetName="Sheet1" WorkbookPath="[in_log_dir+&quot;Log_&quot;+dirname+&quot;.xlsx&quot;]">
+                  <ui:WriteRange.StartingCell>
+                    <InArgument x:TypeArguments="x:String">
+                      <Literal x:TypeArguments="x:String" Value="" />
+                    </InArgument>
+                  </ui:WriteRange.StartingCell>
+                </ui:WriteRange>
+                <ui:GetOutlookMailMessages Filter="{x:Null}" Messages="{x:Null}" TimeoutMS="{x:Null}" Account="indra@nctthai.com" DisplayName="Get outlook mail messages" GetAttachements="False" sap2010:WorkflowViewState.IdRef="GetOutlookMailMessages_3" MailFolder="Inbox" MarkAsRead="True" OnlyUnreadMessages="True" Top="30" />
+              </Sequence>
+            </Sequence>
+          </If.Then>
+        </If>
+      </Sequence>
+    </TryCatch.Try>
+    <TryCatch.Catches>
+      <Catch x:TypeArguments="s:NullReferenceException" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+        <ActivityAction x:TypeArguments="s:NullReferenceException">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="s:NullReferenceException" Name="exception" />
+          </ActivityAction.Argument>
+          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_9">
+            <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Error" Message="No Incoming Emails" />
+          </Sequence>
+        </ActivityAction>
+      </Catch>
+    </TryCatch.Catches>
+    <TryCatch.Finally>
+      <Sequence sap2010:WorkflowViewState.IdRef="Sequence_10">
+        <Assign sap2010:WorkflowViewState.IdRef="Assign_3">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[out_dir]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[newdir]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="End GetEmailInformation processing" />
+      </Sequence>
+    </TryCatch.Finally>
+    <sads:DebugSymbol.Symbol>dzNEOlx1aXBhdGhcQUlBXEFJQVJvYm90XEFJQVxHZXRFbWFpbEluZm9ybWF0aW9uLnhhbWxCTwO9AQ4CAQFUB6EBEgIBDbABB7oBEgIBBakBC6sBFgIBAlc3VzoCAQ9bOFtfAgEOXQldnwECAVxeCV7TDAIBWV8JX8ACAgFTYAlgsQECAVBhCaABDgIBELEBCbgBEgIBCLkBCbkBnQECAQaqAQ2qAZIBAgEDXXZdnAECAV1eJl4wAgFaX7kCX70CAgFYX1NfZgIBV1+RAl+aAgIBVV/tAV/0AQIBVGB2YK4BAgFRYRdhLQIBEWMNngEYAgETtgE0tgE8AgELswE1swE+AgEJuQF2uQGaAQIBB6oBe6oBjwECAQRkD50BGgIBFGURlAEeAgEhlQERmwEhAgEZnAERnAHIAgIBFWWUAWWdAQIBTmsXkQEiAgEimAEXmAFGAgEglQE8lQFGAgEelQGaAZUBogECAR2VAbABlQHpAQIBGpwBwQKcAcUCAgEYnAFvnAGCAQIBF5wBiQKcAZACAgEWbBmIASQCASiJARmQASICASNtG3QkAgFJdRt1rwECAUZ2G3bZAQIBQHcbhwEmAgEpjgFDjgFKAgEmiwFEiwFJAgEkckZyVQIBTG9Hb08CAUp1ogF1rAECAUd2zgF21gECAUR2dHaNAQIBQXgdfy0CATeAAR2AAbQBAgEygQEdhgEvAgEqfFR8ZgIBPntbe2MCATx6YnpqAgE6fVx9YgIBOIABSIABUgIBNYABXYABZwIBM4EB5AGBAfEBAgExgwFZgwFpAgEvgQHLAYEB2QECAS2EAVyEAXQCASs=</sads:DebugSymbol.Symbol>
+  </TryCatch>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="LogMessage_4" sap:VirtualizedContainerService.HintSize="566.4,92.8" />
+      <sap2010:ViewStateData Id="BuildDataTable_1" sap:VirtualizedContainerService.HintSize="566.4,59.2">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="GetOutlookMailMessages_1" sap:VirtualizedContainerService.HintSize="566.4,22.4" />
+      <sap2010:ViewStateData Id="LogMessage_1" sap:VirtualizedContainerService.HintSize="566.4,92.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="336,60.8" />
+      <sap2010:ViewStateData Id="CreateDirectory_1" sap:VirtualizedContainerService.HintSize="336,22.4" />
+      <sap2010:ViewStateData Id="SaveMailAttachments_1" sap:VirtualizedContainerService.HintSize="336,88" />
+      <sap2010:ViewStateData Id="InvokeCode_1" sap:VirtualizedContainerService.HintSize="313.6,164.8" />
+      <sap2010:ViewStateData Id="AddDataRow_1" sap:VirtualizedContainerService.HintSize="313.6,22.4" />
+      <sap2010:ViewStateData Id="AddQueueItem_1" sap:VirtualizedContainerService.HintSize="313.6,22.4" />
+      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="336,414.4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="358.4,830.4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="358.4,60.8" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="380.8,1056">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_2" sap:VirtualizedContainerService.HintSize="396.8,1190.4" />
+      <sap2010:ViewStateData Id="WriteRange_1" sap:VirtualizedContainerService.HintSize="396.8,115.2" />
+      <sap2010:ViewStateData Id="GetOutlookMailMessages_3" sap:VirtualizedContainerService.HintSize="396.8,22.4" />
+      <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="419.2,1532.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="441.6,1657.6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="566.4,1808" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="588.8,2360">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LogMessage_3" sap:VirtualizedContainerService.HintSize="313.6,92.8" />
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="336,217.6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Catch`1_2" sap:VirtualizedContainerService.HintSize="592,288">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="313.6,60.8" />
+      <sap2010:ViewStateData Id="LogMessage_5" sap:VirtualizedContainerService.HintSize="313.6,92.8" />
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="336,318.4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_2" sap:VirtualizedContainerService.HintSize="606.4,3220.8" />
+      <sap2010:ViewStateData Id="GetEmailInformation_1" sap:VirtualizedContainerService.HintSize="646.4,3300.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
+            <x:Boolean x:Key="ShouldCollapseAll">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

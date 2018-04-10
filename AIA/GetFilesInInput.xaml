@@ -1,0 +1,155 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="GetFilesInInput"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_input_dir" Type="InArgument(x:String)" />
+    <x:Property Name="in_main_template_dir" Type="InArgument(x:String)" />
+    <x:Property Name="userFolder" Type="InArgument(x:String)" />
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>GetFilesInInput_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.Core</AssemblyReference>
+      <AssemblyReference>UiPath.Core.Activities</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="GetFilesInInput" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="dir" />
+      <Variable x:TypeArguments="x:String" Default="[Now.ToString(&quot;ddMMMyyyy&quot;)]" Name="dateName" />
+    </Sequence.Variables>
+    <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="Begin GetFilesInInput processing" />
+    <ui:ForEach x:TypeArguments="x:String" DisplayName="For each" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Directory.GetFiles(in_input_dir)]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:String">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:String" Name="filename" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;filename: &quot;+filename]" />
+            <If Condition="[Path.GetExtension(filename).CompareTo(&quot;.zip&quot;) = 0]" sap2010:WorkflowViewState.IdRef="If_1">
+              <If.Else>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_4">
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CopySheetToMain workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="AIA\CopySheetToMain.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_file_xls">[filename]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_main_template_dir">[in_main_template_dir]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="userfolder">[userFolder]</InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
+                </Sequence>
+              </If.Else>
+            </If>
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
+    <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;template dir: &quot;+in_main_template_dir]" />
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RenameExcelFile workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="AIA\RenameExcelFile.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="x:String" x:Key="in_source_file">[in_main_template_dir]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_new_name">[userfolder+"_"+dateName+".xlsx"]</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CompressFolderToZip workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="AIA\CompressFolderToZip.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="x:String" x:Key="in_zip_command">[in_Config("ZIP").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_source_dir">[in_Config("OUTPUT_DIR").ToString+userFolder]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_new_zip_file">[in_Config("OUTPUT_DIR").ToString+String.Format(in_Config("ZIP_NAME").ToString, Now.ToString("dd_MMMM_yyyy"))]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_remove_folder_command">[in_Config("REMOVE_FOLDER").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_remove_folder">[in_Config("OUTPUT_DIR").ToString+userFolder]</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="End GetFilesInInput processing" />
+    <sads:DebugSymbol.Symbol>dy9EOlx1aXBhdGhcQUlBXEFJQVJvYm90XEFJQVxHZXRGaWxlc0luSW5wdXQueGFtbCBGA3cOAgEBSTRJWwIBAksFS5cBAgEtTAVkEgIBHGUFZagBAgEZZgVrHQIBEmwFdB0CAQV1BXWVAQIBA0tyS5QBAgEuTHhMnAECASxSC2EWAgEdZXJlpQECARppRGllAgEWaEdoXQIBFGa8AWbWAQIBE3BIcLYBAgERbkduYgIBD3JJcnYCAQxvRm9zAgEJcVFxdgIBB2zAAWzeAQIBBnVydZIBAgEEUw1ToAECASlUDWASAgEeU3pTnQECASpUG1RaAgEfVhFeHAIBIFcTXSsCASFbUVtdAgEnWltacQIBJVlSWVwCASNXygFX5AECASI=</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="LogMessage_1" sap:VirtualizedContainerService.HintSize="502.4,92.8" />
+      <sap2010:ViewStateData Id="LogMessage_3" sap:VirtualizedContainerService.HintSize="464,92.8" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_1" sap:VirtualizedContainerService.HintSize="313.6,88" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="336,212.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="464,363.2" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="486.4,620.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="502.4,755.2" />
+      <sap2010:ViewStateData Id="LogMessage_4" sap:VirtualizedContainerService.HintSize="502.4,92.8" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_2" sap:VirtualizedContainerService.HintSize="502.4,88" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_3" sap:VirtualizedContainerService.HintSize="502.4,88" />
+      <sap2010:ViewStateData Id="LogMessage_2" sap:VirtualizedContainerService.HintSize="502.4,92.8" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="524.8,1534.4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="GetFilesInInput_1" sap:VirtualizedContainerService.HintSize="564.8,3414.4" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

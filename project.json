@@ -1,0 +1,26 @@
+{
+  "name": "Robot_POC",
+  "description": "UiPath_REFrameWork Template",
+  "main": "Main.xaml",
+  "dependencies": {
+    "Microsoft.Activities": "1.0.1.0",
+    "Microsoft.Activities.Extensions": "2.0.6.9",
+    "UiPath.Cognitive.Activities": "1.0.6479.13212",
+    "UiPath.Core.Activities": "18.1.6659.10070",
+    "UiPath.Credentials.Activities": "1.1.6479.13204",
+    "UiPath.Database.Activities": "1.1.6660.26865",
+    "UiPath.Excel.Activities": "2.3.6660.23035",
+    "UiPath.Mail.Activities": "1.1.6562.21018",
+    "UiPath.PDF.Activities": "1.0.6479.13204",
+    "UiPath.Terminal.Activities": "1.1.6464.20815",
+    "UiPath.WebAPI.Activities": "1.1.6479.13209"
+  },
+  "excludedData": [
+    "Private:*",
+    "*password*"
+  ],
+  "toolVersion": "18.1.3.7",
+  "projectVersion": "1.0.6673.18733",
+  "packOptions": {},
+  "runtimeOptions": {}
+}
